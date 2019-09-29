@@ -1,6 +1,17 @@
 <div class="card">
         <div class="card-body">
           <form [formGroup]="angForm" novalidate>
+
+            <div class="form-group">
+                <input type="file" name="file" id="file" (change)="uploadImage($event)">
+                <div [hidden]="!uploadPercent">
+                        <mat-progress-bar mode="determine" value="{{uploadPercent | async}}"></mat-progress-bar>
+                </div>
+                <div [hidden]="!image">
+                    <img [src]="image || '//:0'">
+                </div>
+            </div>
+
             <div class="form-group">
               <label class="col-md-4">Product Name</label>
               <input type="text" class="form-control" 
