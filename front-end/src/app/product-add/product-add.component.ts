@@ -30,6 +30,4 @@ export class ProductAddComponent implements OnInit {
     this.ps.addProduct(ProductName, ProductDescription, ProductPrice);
   }
 
-  
-
 }
