@@ -12,6 +12,8 @@ import { ProductEditComponent } from './product-edit/product-edit.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductsService } from './products.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FileSelectDirective } from 'ng2-file-upload';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ProductAddComponent,
     ProductGetComponent,
     ProductEditComponent,
+    FileSelectDirective
   ],
   imports: [
     BrowserModule,
@@ -27,7 +30,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    FormsModule
   ],
   providers: [ProductsService],
   bootstrap: [AppComponent]
