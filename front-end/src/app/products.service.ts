@@ -15,6 +15,12 @@ export class ProductsService {
     private http: HttpClient,
     private router: Router,) { }
 
+  uploadImage(file){
+    this.http.post(`${this.uri}/upload`, file)
+      .subscribe(res => console.log("file uploaded"));
+  }  
+  
+
   addProduct(ProductName, ProductDescription, ProductPrice){
     const obj = {
       ProductName,
