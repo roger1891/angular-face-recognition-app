@@ -7,6 +7,26 @@ const productRoutes = express.Router();
 // Require Product model in our routes module
 let Product = require('../models/Product');
 
+//Defined file upload route
+/*productRoutes.route('/upload').post(function (req, res) {
+	
+ if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  // The name of the input field is used to retrieve the uploaded file
+  let file = req.files.file;
+  let file_name = req.body.file.name
+   
+  // Use the mv() method to place the file somewhere on your server
+  file.mv('/images/' + file_name +'.jpg', function(err) {
+    if (err)
+      return res.status(500).send(err);
+
+    res.send('File uploaded!');
+  }); 
+});*/
+
 // Defined store route
 productRoutes.route('/add').post(function (req, res) {
   let product = new Product(req.body);
