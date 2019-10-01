@@ -7,8 +7,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const config = require('./DB');
-//const fileUpload = require('express-fileupload');
-//const busboy = require('connect-busboy');
 
 const DIR = './uploads';
 
@@ -43,8 +41,6 @@ app.use(function (req, res, next) {
 });
 
 app.use(cors());
-//app.use(fileUpload());
-//app.use(busboy());
 app.use('/products', productRoute);
 
  
