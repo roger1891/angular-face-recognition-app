@@ -15,14 +15,13 @@ export class ProductsService {
     private http: HttpClient,
     private router: Router,) { }
 
-  uploadImage(file){
-    this.http.post(`${this.uri}/upload`, file)
-      .subscribe(res => console.log("file uploaded"));
-  }  
-  
+  uploadLink(){
+    return `${this.uri}/upload`;
+  }
 
-  addProduct(ProductName, ProductDescription, ProductPrice){
+  addProduct(ProductLink, ProductName, ProductDescription, ProductPrice){
     const obj = {
+      ProductLink,
       ProductName,
       ProductDescription,
       ProductPrice

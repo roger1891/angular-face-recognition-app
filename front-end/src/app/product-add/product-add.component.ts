@@ -4,8 +4,8 @@ import { ProductsService } from '../products.service';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import {  FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
-
-const URL = "http://localhost:4000/products/upload";
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { DomSanitizer } from "@angular/platform-browser";
 
 
 @Component({
@@ -16,26 +16,60 @@ const URL = "http://localhost:4000/products/upload";
 export class ProductAddComponent implements OnInit {
 
   angForm: FormGroup;
+  public uploader: FileUploader = new FileUploader({ url: this.ps.uploadLink(), itemAlias: 'photo' });
+  sanitizer: DomSanitizer;
 
-  public uploader: FileUploader = new FileUploader({ url: URL, itemAlias: 'photo' });
-  
-
-  image: string = null;
+  ProductLink: string = null;
   uploadPercent: Observable<number>;
   downloadURL: Observable<string>;
 
+  //preview image upon upload
+  imagePath: string;
+  imgURL: any;
+
   constructor(private fb: FormBuilder, private ps: ProductsService) {
     this.createForm();
-   }
+  }
 
-   ngOnInit() {
-    this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
+  ngOnInit() {
+    this.uploader.onAfterAddingFile = (file) => { 
+      //initialize local variables
+      let myDate: number = Date.now();
+      let url = "http://localhost:4000/uploads"
+      file.withCredentials = false;
+      let filename: string;
+      
+      //rename the file
+      file.file.name = myDate + '-' + file.file.name;
+      filename = file.file.name;
+
+      //image path
+      this.ProductLink = url + '/' + filename;
+    };   
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-         console.log('ImageUpload:uploaded:', item, status, response);
-         alert('File uploaded successfully');
-      };
-    }
+      //this.uploader.queue[0].remove();
+      alert('File uploaded successfully');
+   };
+  }
 
+  
+  previewImage(files) {
+    if (files.length === 0)
+      return;
+ 
+    var mimeType = files[0].type;
+    if (mimeType.match(/image\/*/) == null) {
+      return alert('Only image files!');
+    }
+    
+    var reader = new FileReader();
+    this.imagePath = files;
+    reader.readAsDataURL(files[0]); 
+    reader.onload = (_event) => { 
+      this.imgURL = reader.result; 
+    }
+  }
+  
   createForm() {
     this.angForm = this.fb.group({
       ProductName: ['', Validators.required],
@@ -45,9 +79,16 @@ export class ProductAddComponent implements OnInit {
   }
 
   addProduct(ProductName, ProductDescription, ProductPrice){
-    this.ps.addProduct(ProductName, ProductDescription, ProductPrice);
+    //upload values to database
+    this.ps.addProduct(this.ProductLink, ProductName, ProductDescription, ProductPrice);
+    //upload content to server
+    this.uploader.uploadAll();
   }
-
+  /*
+  imageLoader(event){
+    console.log(this.uploader.progress);
+    //this.uploadPercent = this.uploader.progress;
+  }*/
   uploadImage(event) {
     const file = event.target.files[0];
     console.log("this is file: " + file);
@@ -56,7 +97,6 @@ export class ProductAddComponent implements OnInit {
       return alert('Only image files!');
     } 
     else {
-      this.ps.uploadImage(file);
       //const task = this.storage.upload(path, file);
       //const ref = this.storage.ref(path);
       //this.uploadPercent = task.percentageChanges();
