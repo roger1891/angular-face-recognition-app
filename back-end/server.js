@@ -43,7 +43,8 @@ app.use(function (req, res, next) {
 
 app.use(cors());
 app.use('/products', productRoute);
-
+//display images on angular via static path
+app.use('/uploads', express.static('uploads'));
  
 app.post('/products/upload',upload.single('photo'), function (req, res) {
 	if (!req.file) {
