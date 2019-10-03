@@ -5,6 +5,9 @@ const Schema = mongoose.Schema;
 
 //define collection & schema from Product
 let Product = new Schema({
+	ProductLink: {
+		type: String
+	},
 	ProductName: {
 		type: String
 	},
@@ -13,11 +16,7 @@ let Product = new Schema({
 	},
 	ProductPrice: {
 		type: Number
-	},
-	ProductLink: {
-		type: String
 	}
-	
 }, {
 	collection: 'Product'
 });
