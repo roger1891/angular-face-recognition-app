@@ -15,7 +15,8 @@ let storage = multer.diskStorage({
       cb(null, DIR);
     },
     filename: (req, file, cb) => {
-      cb(null, file.fieldname + '-' + Date.now() + '.' + path.extname(file.originalname));
+      //cb(null, file.originalname + '-' + Date.now() + '.' + path.extname(file.originalname));
+	  cb(null, file.originalname);
     }
 });
 let upload = multer({storage: storage});
@@ -45,7 +46,7 @@ app.use('/products', productRoute);
 
  
 app.post('/products/upload',upload.single('photo'), function (req, res) {
-    if (!req.file) {
+	if (!req.file) {
         console.log("No file received");
         return res.send({
           success: false
