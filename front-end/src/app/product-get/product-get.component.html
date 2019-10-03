@@ -1,6 +1,7 @@
 <table class="table table-hover">
     <thead>
     <tr>
+        <td>Product Link</td>
         <td>Product Name</td>
         <td>Product Description</td>
         <td>Product Price</td>
@@ -10,6 +11,7 @@
     
     <tbody>
         <tr *ngFor="let product of products">
+            <td><img [src]="product.ProductLink || '//:0'" height="64" ></td>
             <td>{{ product.ProductName }}</td>
             <td>{{ product.ProductDescription }}</td>
             <td>{{ product.ProductPrice }}</td>
