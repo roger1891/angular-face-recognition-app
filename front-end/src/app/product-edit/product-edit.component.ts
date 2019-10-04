@@ -70,6 +70,10 @@ export class ProductEditComponent implements OnInit {
     this.imagePath = files;
     reader.readAsDataURL(files[0]); 
     reader.onload = (_event) => { 
+      //upload percentage
+      this.uploadPercent = new Observable((observer) => {
+        Math.round((_event.loaded / _event.total) * 100);  
+      });
       this.imgURL = reader.result; 
     }
   }

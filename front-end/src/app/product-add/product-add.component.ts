@@ -41,11 +41,11 @@ export class ProductAddComponent implements OnInit {
 
       //image path
       this.ProductLink = url + '/' + filename;
-    };   
+    };
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
       //this.uploader.queue[0].remove();
       alert('File uploaded successfully');
-   };
+    };
   }
 
   
@@ -62,6 +62,11 @@ export class ProductAddComponent implements OnInit {
     this.imagePath = files;
     reader.readAsDataURL(files[0]); 
     reader.onload = (_event) => { 
+      //upload percentage
+      this.uploadPercent = new Observable((observer) => {
+        Math.round((_event.loaded / _event.total) * 100);  
+      });
+      
       this.imgURL = reader.result; 
     }
   }

@@ -16,7 +16,7 @@
             <div class="form-group">
               <input #file type="file" name="photo" ng2FileSelect [uploader]="uploader" (change)="previewImage(file.files)" />
               <div [hidden]="!uploadPercent">
-                  <mat-progress-bar mode="determine" value="{{uploadPercent | async}}"></mat-progress-bar>
+                  <mat-progress-bar mode="determinate" value="{{uploadPercent | async}}"></mat-progress-bar>
               </div>
               <div [hidden]="!imgURL">
                   <img [src]="imgURL || '//:0'" height="200" >
