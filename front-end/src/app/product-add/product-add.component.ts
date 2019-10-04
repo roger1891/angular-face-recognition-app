@@ -72,6 +72,7 @@ export class ProductAddComponent implements OnInit {
   
   createForm() {
     this.angForm = this.fb.group({
+      ProductFile: ['', Validators.required],
       ProductName: ['', Validators.required],
       ProductDescription: ['', Validators.required],
       ProductPrice: ['', Validators.required]

@@ -2,14 +2,18 @@
         <div class="card-body">
           <form [formGroup]="angForm" novalidate>
             <div class="form-group">
-              <input #file type="file" name="photo" ng2FileSelect [uploader]="uploader" (change)="previewImage(file.files)" />
+              <input formControlName="ProductFile" #file type="file" name="photo" ng2FileSelect [uploader]="uploader" (change)="previewImage(file.files)" />
               <div [hidden]="!uploadPercent">
                   <mat-progress-bar mode="determinate" value="{{uploadPercent | async}}"></mat-progress-bar>
               </div>
               <div [hidden]="!imgURL">
                   <img [src]="imgURL || '//:0'" height="200" >
               </div>
-              
+              <div *ngIf="angForm.controls['ProductFile'].invalid && (angForm.controls['ProductFile'].dirty || angForm.controls['ProductFile'].touched)" class="alert alert-danger">
+                  <div *ngIf="angForm.controls['ProductFile'].errors.required">
+                    File is required.
+                  </div>
+                </div>              
             </div>
 
             <div class="form-group">
