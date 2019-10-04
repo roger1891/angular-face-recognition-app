@@ -17,7 +17,6 @@ export class ProductAddComponent implements OnInit {
 
   ProductLink: string = null;
   uploadPercent: Observable<number>;
-  downloadURL: Observable<string>;
 
   //preview image upon upload
   imagePath: string;
@@ -84,37 +83,5 @@ export class ProductAddComponent implements OnInit {
     this.ps.addProduct(this.ProductLink, ProductName, ProductDescription, ProductPrice);
     //upload content to server
     this.uploader.uploadAll();
-  }
-  /*
-  imageLoader(event){
-    console.log(this.uploader.progress);
-    //this.uploadPercent = this.uploader.progress;
-  }*/
-  uploadImage(event) {
-    const file = event.target.files[0];
-    console.log("this is file: " + file);
-    const path = `posts/${file.name}`;
-    if (file.type.split('/')[0] !== 'image') {
-      return alert('Only image files!');
-    } 
-    else {
-      //const task = this.storage.upload(path, file);
-      //const ref = this.storage.ref(path);
-      //this.uploadPercent = task.percentageChanges();
-      //console.log('Image uploaded!');
-      /*task.snapshotChanges()
-        .pipe(
-          finalize(() => {
-            this.downloadURL = ref.getDownloadURL();
-            this.downloadURL.subscribe(url => {
-              this.image = url
-              console.log('URL is: ' + url);         
-            });
-          })
-        )
-        .subscribe();
-      console.log('Image submitted into Firestore');*/
-    }
-  }    
-
+  } 
 }
