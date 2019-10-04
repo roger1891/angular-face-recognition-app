@@ -46,6 +46,7 @@ productRoutes.route('/update/:id').post(function (req, res) {
     if (!product)
       res.status(404).send("Record not found");
     else {
+	  product.ProductLink = req.body.ProductLink;
       product.ProductName = req.body.ProductName;
       product.ProductDescription = req.body.ProductDescription;
       product.ProductPrice = req.body.ProductPrice;

@@ -2,10 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ProductsService } from '../products.service';
 import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
 import {  FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { DomSanitizer } from "@angular/platform-browser";
 
 
 @Component({
@@ -17,7 +14,6 @@ export class ProductAddComponent implements OnInit {
 
   angForm: FormGroup;
   public uploader: FileUploader = new FileUploader({ url: this.ps.uploadLink(), itemAlias: 'photo' });
-  sanitizer: DomSanitizer;
 
   ProductLink: string = null;
   uploadPercent: Observable<number>;

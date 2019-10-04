@@ -1,6 +1,18 @@
 <div class="card">
         <div class="card-body">
           <form [formGroup]="angForm" novalidate>
+
+
+            <div class="form-group">
+              <input #file type="file" name="photo" ng2FileSelect [uploader]="uploader" (change)="previewImage(file.files)" />
+                <div [hidden]="!uploadPercent">
+                  <mat-progress-bar mode="determine" value="{{uploadPercent | async}}"></mat-progress-bar>
+                </div>
+                <div [hidden]="!imgURL">
+                  <img [src]="imgURL || '//:0'" height="200" >
+                </div>  
+            </div>
+
             <div class="form-group">
               <label class="col-md-4">Product Name</label>
               <input type="text" class="form-control" 
@@ -39,7 +51,7 @@
             </div>
             <div class="form-group">
               <button (click) = "updateProduct(ProductName.value, ProductDescription.value, ProductPrice.value)" type="button" class="btn btn-primary"
-              [disabled]="angForm.invalid" >
+              [disabled]="angForm.invalid || !uploader.getNotUploadedItems().length" >
                 Update Product
               </button>
             </div>
