@@ -14,6 +14,8 @@ import { ProductsService } from './products.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FileSelectDirective } from 'ng2-file-upload';
 import { FormsModule } from '@angular/forms';
+import { ImageUploadService } from './image-upload.service';
+
 
 @NgModule({
   declarations: [
@@ -33,7 +35,10 @@ import { FormsModule } from '@angular/forms';
     MatProgressBarModule,
     FormsModule
   ],
-  providers: [ProductsService],
+  providers: [
+    ProductsService,
+    ImageUploadService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
