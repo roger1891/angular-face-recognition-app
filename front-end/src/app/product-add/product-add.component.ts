@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ProductsService } from '../products.service';
 import { Observable } from 'rxjs';
 import {  FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
+import { ImageUploadService } from '../image-upload.service';
 
 
 @Component({
@@ -19,32 +20,20 @@ export class ProductAddComponent implements OnInit {
   uploadPercent: Observable<number>;
 
   //preview image upon upload
-  imagePath: string;
   imgURL: any;
 
-  constructor(private fb: FormBuilder, private ps: ProductsService) {
+  constructor(private fb: FormBuilder, private ps: ProductsService, private ims :ImageUploadService) {
     this.createForm();
   }
 
   ngOnInit() {
+    //upload after adding file
     this.uploader.onAfterAddingFile = (file) => { 
-      //initialize local variables
-      let myDate: number = Date.now();
-      let url = "http://localhost:4000/uploads"
-      file.withCredentials = false;
-      let filename: string;
-      
-      //rename the file
-      file.file.name = myDate + '-' + file.file.name;
-      filename = file.file.name;
-
-      //image path
-      this.ProductLink = url + '/' + filename;
+      //create image path from file
+      this.ProductLink = this.ims.createProductLink(file);
     };
-    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      //this.uploader.queue[0].remove();
-      alert('File uploaded successfully');
-    };
+    //upload on completion
+    this.ims.uploaderOnCompletion(this.uploader);
   }
 
   
@@ -58,7 +47,6 @@ export class ProductAddComponent implements OnInit {
     }
     
     var reader = new FileReader();
-    this.imagePath = files;
     reader.readAsDataURL(files[0]); 
     reader.onload = (_event) => { 
       //upload percentage
@@ -67,7 +55,7 @@ export class ProductAddComponent implements OnInit {
       });
       
       this.imgURL = reader.result; 
-    }
+    };
   }
   
   createForm() {

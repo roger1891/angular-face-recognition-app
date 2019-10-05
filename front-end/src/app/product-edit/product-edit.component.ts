@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductsService } from '../products.service';
 import { Observable } from 'rxjs';
 import {  FileUploader, FileSelectDirective } from 'ng2-file-upload/ng2-file-upload';
+import { ImageUploadService } from '../image-upload.service';
 
 @Component({
   selector: 'app-product-edit',
@@ -22,50 +23,38 @@ export class ProductEditComponent implements OnInit {
   
 
   //preview image upon upload
-  imagePath: string;
   imgURL: any;
 
   constructor(
     private route: ActivatedRoute,
     private ps: ProductsService,
-    private fb: FormBuilder) {
+    private fb: FormBuilder,
+    private ims :ImageUploadService) {
       this.createForm();
   }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.ps.editProduct(params['id']).subscribe(res => {
+        //set product array to respond from url
         this.product = res;
         //set default image from database
         this.imgURL = this.product.ProductLink;
       });
-     });
-
-   
+     });  
+    //upload after adding file
     this.uploader.onAfterAddingFile = (file) => { 
-      //initialize local variables
-      let myDate: number = Date.now();
-      let url = "http://localhost:4000/uploads"
-      file.withCredentials = false;
-      let filename: string;
-      
-      //rename the file
-      file.file.name = myDate + '-' + file.file.name;
-      filename = file.file.name;
-
-      //image path
-      this.ProductLink = url + '/' + filename;
-    };   
-    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      //this.uploader.queue[0].remove();
-      alert('File uploaded successfully');
-   };
-
+      //create image path from file
+      this.ProductLink = this.ims.createProductLink(file);
+    };
+    //upload on completion
+    this.ims.uploaderOnCompletion(this.uploader);
   }
 
   editImageBtn(){
     this.isEditImg = true;
   }
+
   previewImage(files) {
     if (files.length === 0)
       return;
@@ -76,7 +65,6 @@ export class ProductEditComponent implements OnInit {
     }
     
     var reader = new FileReader();
-    this.imagePath = files;
     reader.readAsDataURL(files[0]); 
     reader.onload = (_event) => { 
       //upload percentage for progressbar
@@ -92,8 +80,6 @@ export class ProductEditComponent implements OnInit {
     }
   }
 
- 
-  
   createForm(){
     this.angForm = this.fb.group({
       ProductFile: ['', Validators.length > 0],
