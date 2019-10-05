@@ -4,7 +4,14 @@
 
 
           <div class="form-group">
-              <input formControlName="ProductFile" #file type="file" name="photo" ng2FileSelect [uploader]="uploader" (change)="previewImage(file.files)" />
+              <div [hidden]="isEditImg">
+                  <button (click) = "editImageBtn()" type="button" class="btn btn-primary">
+                    Edit Image
+                  </button>
+              </div>
+              <div [hidden]="!isEditImg">
+                  <input formControlName="ProductFile" #file type="file" name="photo" ng2FileSelect [uploader]="uploader" (change)="previewImage(file.files)" />
+              </div>
               <div [hidden]="!uploadPercent">
                   <mat-progress-bar mode="determinate" value="{{uploadPercent | async}}"></mat-progress-bar>
               </div>
@@ -54,11 +61,17 @@
                 Product Price is required.
               </div>
             </div>
-            <div class="form-group">
-              <button (click) = "updateProduct(ProductName.value, ProductDescription.value, ProductPrice.value)" type="button" class="btn btn-primary"
-              [disabled]="angForm.invalid || !uploader.getNotUploadedItems().length" >
-                Update Product
-              </button>
+            <div *ngIf="isNewImgUploaded == false" class="form-group">
+                <button (click) = "updateProduct(ProductName.value, ProductDescription.value, ProductPrice.value)" type="button" class="btn btn-primary"
+                [disabled]="angForm.invalid" >
+                  Update Product1
+                </button>
+            </div>
+            <div *ngIf="isNewImgUploaded == true" class="form-group">
+                <button (click) = "updateProduct(ProductName.value, ProductDescription.value, ProductPrice.value)" type="button" class="btn btn-primary"
+                [disabled]="angForm.invalid || !uploader.getNotUploadedItems().length">
+                  Update Product2
+                </button>
             </div>
           </form>
         </div>

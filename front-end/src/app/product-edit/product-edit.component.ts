@@ -17,6 +17,9 @@ export class ProductEditComponent implements OnInit {
   ProductLink: string = null;
   uploadPercent: Observable<number>;
   product: any = {};
+  isEditImg = false;
+  isNewImgUploaded = false;
+  
 
   //preview image upon upload
   imagePath: string;
@@ -33,9 +36,12 @@ export class ProductEditComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.ps.editProduct(params['id']).subscribe(res => {
         this.product = res;
+        //set default image from database
+        this.imgURL = this.product.ProductLink;
       });
      });
 
+   
     this.uploader.onAfterAddingFile = (file) => { 
       //initialize local variables
       let myDate: number = Date.now();
@@ -57,6 +63,9 @@ export class ProductEditComponent implements OnInit {
 
   }
 
+  editImageBtn(){
+    this.isEditImg = true;
+  }
   previewImage(files) {
     if (files.length === 0)
       return;
@@ -70,20 +79,24 @@ export class ProductEditComponent implements OnInit {
     this.imagePath = files;
     reader.readAsDataURL(files[0]); 
     reader.onload = (_event) => { 
-      //upload percentage
+      //upload percentage for progressbar
       this.uploadPercent = new Observable((observer) => {
         Math.round((_event.loaded / _event.total) * 100);  
       });
       this.imgURL = reader.result; 
+
+      //is for image upload buttons
+      this.isEditImg = false;
+      //is for send data button
+      this.isNewImgUploaded = true
     }
   }
-  
-  
 
-
+ 
+  
   createForm(){
     this.angForm = this.fb.group({
-      ProductFile: ['', Validators.required],
+      ProductFile: ['', Validators.length > 0],
       ProductName: ['', Validators.required],
       ProductDescription: ['', Validators.required],
       ProductPrice: ['', Validators.required]
