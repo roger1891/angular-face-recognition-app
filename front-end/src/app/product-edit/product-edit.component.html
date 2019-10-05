@@ -64,13 +64,13 @@
             <div *ngIf="isNewImgUploaded == false" class="form-group">
                 <button (click) = "updateProduct(ProductName.value, ProductDescription.value, ProductPrice.value)" type="button" class="btn btn-primary"
                 [disabled]="angForm.invalid" >
-                  Update Product1
+                  Update Product
                 </button>
             </div>
             <div *ngIf="isNewImgUploaded == true" class="form-group">
                 <button (click) = "updateProduct(ProductName.value, ProductDescription.value, ProductPrice.value)" type="button" class="btn btn-primary"
                 [disabled]="angForm.invalid || !uploader.getNotUploadedItems().length">
-                  Update Product2
+                  Update Product
                 </button>
             </div>
           </form>
