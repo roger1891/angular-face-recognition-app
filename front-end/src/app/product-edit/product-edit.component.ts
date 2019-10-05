@@ -105,7 +105,14 @@ export class ProductEditComponent implements OnInit {
 
   updateProduct(ProductName, ProductDescription, ProductPrice, id){
     this.route.params.subscribe(params => {
-      this.ps.updateProduct(this.ProductLink, ProductName, ProductDescription, ProductPrice, params.id);
+      //if image has been uploaded...
+      if(this.isNewImgUploaded){
+        //use product link based on image uploaded details
+        this.ps.updateProduct(this.ProductLink, ProductName, ProductDescription, ProductPrice, params.id);
+      } else {
+        //use img url based on database
+        this.ps.updateProduct(this.imgURL, ProductName, ProductDescription, ProductPrice, params.id);
+      }
       //upload content to server
       this.uploader.uploadAll();
     });
