@@ -72,5 +72,17 @@ export class ProductAddComponent implements OnInit {
     this.ps.addProduct(this.ProductLink, ProductName, ProductDescription, ProductPrice);
     //upload content to server
     this.uploader.uploadAll();
-  } 
+
+    //reset fields after upload
+    this.resetFields();
+  }
+  
+  resetFields(){
+    this.angForm.controls["ProductFile"].reset();
+    this.imgURL = "";
+    this.uploadPercent = null;
+    this.angForm.controls["ProductName"].reset();
+    this.angForm.controls["ProductDescription"].reset();
+    this.angForm.controls["ProductPrice"].reset();
+  }
 }
