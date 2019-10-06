@@ -54,7 +54,7 @@ export class ProductAddComponent implements OnInit {
         Math.round((_event.loaded / _event.total) * 100);  
       });
       
-      this.imgURL = reader.result; 
+      this.imgURL = reader.result;
     };
   }
   
