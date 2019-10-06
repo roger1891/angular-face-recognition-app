@@ -10,13 +10,13 @@
     </thead>
     
     <tbody>
-        <tr *ngFor="let product of products">
+        <tr *ngFor="let product of products; index as i">
             <td><img [src]="product.ProductLink || '//:0'" height="64" ></td>
             <td>{{ product.ProductName }}</td>
             <td>{{ product.ProductDescription }}</td>
             <td>{{ product.ProductPrice }}</td>
             <td><a [routerLink]="['/edit', product._id]" class="btn btn-primary">Edit</a></td>
-            <td><a (click)="deleteProduct(product._id)" class="btn btn-danger">Delete</a></td>
+            <td><a (click)="deleteProduct(product._id, i)" class="btn btn-danger">Delete</a></td>
         </tr>
     </tbody>
 </table>
