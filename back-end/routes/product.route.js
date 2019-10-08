@@ -4,19 +4,42 @@ const express = require('express');
 const app = express();
 const productRoutes = express.Router();
 const fs = require('fs');
+const faceDetAPI = require('../apis/FacedetAPI.js');
 
 // Require Product model in our routes module
 let Product = require('../models/Product');
+let myFaceDetAPI = new faceDetAPI();
+
+
+async function customAsyncFunc(productLink, productId){
+   console.log(1)
+   await delay(5000)
+   console.log(2)
+   myFaceDetAPI.trainAlbum(productLink, productId)
+}
+
+function delay(ms){
+    return new Promise(resolve=>{
+        setTimeout(resolve,ms)
+    })
+}
 
 // Defined store route
 productRoutes.route('/add').post(function (req, res) {
   let product = new Product(req.body);
+  //save to database
   product.save()
     .then(product => {
+	  let productId = product._id.toString();
+	  let productLink = product.ProductLink;
       res.status(200).json({'Product': 'Product has been added successfully'});
+	  
+	  //insert data into api	
+		//delay sending data to api so that image can be stored into filepath first
+		customAsyncFunc(productLink, productId);
     })
     .catch(err => {
-    res.status(400).send("unable to save to database");
+		res.status(400).send("unable to save to database");
     });
 });
 
