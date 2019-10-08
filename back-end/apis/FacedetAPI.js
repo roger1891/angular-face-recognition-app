@@ -1,8 +1,13 @@
+
+const fs = require('fs');
+
 module.exports = function () {
 	const unirest = require('unirest');
 	const API_KEY = process.env.FACEDETECT_API_KEY_BY_LAMBDA;
 	const ALBUM_NAME = 'popularityContest5';
     const ALBUM_KEY = process.env.FACEDETECT_ALBUM_KEY;
+	const DIR = 'uploads/';
+	
 	//important ones:
 	//create, train, rebuild recognize
 	//post
@@ -37,7 +42,7 @@ module.exports = function () {
 		let req = unirest("POST", requestString);
 		let imgURL = url;
 		let entryId = id
-
+/*
 		req.headers({
 			"x-rapidapi-host": "lambda-face-recognition.p.rapidapi.com",
 			"x-rapidapi-key": API_KEY,
@@ -64,13 +69,23 @@ module.exports = function () {
 		]);
 
 		req.end(function (res) {
-			if (res.error) {
-				console.log(res.body.error);
-			}else {
-				console.log(res.body);	
-			}	
-		});		
+			
+			console.log(res);			
+				
+		});	*/
+		
+		unirest.post(requestString)
+		   .header("X-RapidAPI-Key", API_KEY)
+		   //.field("urls", imgURL)
+		   .attach("files", fs.createReadStream(createPath(imgURL)))
+		   .field("album", ALBUM_NAME)
+		   .field("albumkey", ALBUM_KEY)
+		   .field("entryid", entryId)
+		   .end(result => {
+			   console.log(result.body);
+		   });   
 	}
+	
 	
 	//get
 	this.rebuildAlbum = ()=>{
@@ -91,6 +106,7 @@ module.exports = function () {
 			if (res.error) {
 				console.log(res.body.error);
 			}else {
+				console.log("successfully rebuild album");
 				console.log(res.body);	
 			}	
 		});
@@ -205,6 +221,17 @@ module.exports = function () {
 				console.log(res.body);	
 			}
 		});		
+	}
+	
+	//private function
+	createPath = (imgURL) => {
+		let fileName = imgURL;
+		console.log("my file is: " + fileName);
+		let pattern = /(?<=uploads\/).*$/gi;
+		let regexResult = fileName.match(pattern);
+		let imagePath = DIR + regexResult;
+
+	    return imagePath;
 	}
 }
 
