@@ -14,7 +14,9 @@ const faceDetAPI = require('./apis/FacedetAPI.js');
 dotenv.config()
 let myFaceDetAPI = new faceDetAPI();
 
-console.log(myFaceDetAPI.createAlbum());
+//console.log(myFaceDetAPI.createAlbum());
+//myFaceDetAPI.trainAlbum("http://www.lambdal.com/tiger.jpg", "5d9ca969835e1edb64cf03d5");
+//myFaceDetAPI.trainAlbum("http://localhost:4000/uploads/1570544614486-test.jpg", "5d9ca969835e1edb64cf03d5");
 
 const DIR = './uploads';
 
@@ -70,8 +72,6 @@ app.post('/products/upload',upload.single('photo'), function (req, res) {
 });
 
 let port = process.env.PORT;
-
-console.log("this port is" + process.env.PORT);
 
 const server = app.listen(port, ()=> {
 	console.log('listening on port ' + port);
