@@ -6,7 +6,15 @@ const multer = require('multer');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 const config = require('./DB');
+const faceDetAPI = require('./apis/FacedetAPI.js');
+
+//initialize vars
+dotenv.config()
+let myFaceDetAPI = new faceDetAPI();
+
+console.log(myFaceDetAPI.createAlbum());
 
 const DIR = './uploads';
 
@@ -61,7 +69,9 @@ app.post('/products/upload',upload.single('photo'), function (req, res) {
       }
 });
 
-let port = process.env.PORT || 4000;
+let port = process.env.PORT;
+
+console.log("this port is" + process.env.PORT);
 
 const server = app.listen(port, ()=> {
 	console.log('listening on port ' + port);
