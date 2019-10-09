@@ -12,10 +12,14 @@ let myFaceDetAPI = new faceDetAPI();
 
 
 async function customAsyncFunc(productLink, productId){
-   console.log(1)
-   await delay(5000)
-   console.log(2)
+   console.log(1);
+   await delay(5000);
+   console.log(2);
    myFaceDetAPI.trainAlbum(productLink, productId)
+   console.log(3);
+   await delay(5000);
+   myFaceDetAPI.rebuildAlbum();
+   console.log(4);
 }
 
 function delay(ms){
@@ -35,8 +39,8 @@ productRoutes.route('/add').post(function (req, res) {
       res.status(200).json({'Product': 'Product has been added successfully'});
 	  
 	  //insert data into api	
-		//delay sending data to api so that image can be stored into filepath first
-		customAsyncFunc(productLink, productId);
+	  //delay sending data to api so that image can be stored into filepath first
+	  customAsyncFunc(productLink, productId);
     })
     .catch(err => {
 		res.status(400).send("unable to save to database");
