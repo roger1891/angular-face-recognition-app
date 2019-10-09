@@ -16,6 +16,7 @@ import { FileSelectDirective } from 'ng2-file-upload';
 import { FormsModule } from '@angular/forms';
 import { ImageUploadService } from './image-upload.service';
 import { HomeComponent } from './home/home.component';
+import {WebcamModule} from 'ngx-webcam';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { HomeComponent } from './home/home.component';
     HttpClientModule,
     BrowserAnimationsModule,
     MatProgressBarModule,
-    FormsModule
+    FormsModule,
+    WebcamModule
   ],
   providers: [
     ProductsService,
