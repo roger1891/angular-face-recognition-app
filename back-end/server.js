@@ -56,6 +56,11 @@ app.use('/products', productRoute);
 //display images on angular via static path
 app.use('/uploads', express.static('uploads'));
  
+//view album from apis/FacedetAPI
+app.get("/", function (req, res){
+	myFaceDetAPI.viewAlbum();
+});
+ 
 app.post('/products/upload',upload.single('photo'), function (req, res) {
 	if (!req.file) {
         console.log("No file received");
