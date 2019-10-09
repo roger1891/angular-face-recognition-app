@@ -82,6 +82,7 @@ module.exports = function () {
 		   .field("albumkey", ALBUM_KEY)
 		   .field("entryid", entryId)
 		   .end(result => {
+			   console.log("successfully trained album");
 			   console.log(result.body);
 		   });   
 	}
@@ -139,6 +140,7 @@ module.exports = function () {
 			if (res.error) {
 				console.log(res.body.error);
 			}else {
+				console.log("successfully recognized image");
 				console.log(res.body);	
 			}	
 		});
@@ -226,7 +228,6 @@ module.exports = function () {
 	//private function
 	createPath = (imgURL) => {
 		let fileName = imgURL;
-		console.log("my file is: " + fileName);
 		let pattern = /(?<=uploads\/).*$/gi;
 		let regexResult = fileName.match(pattern);
 		let imagePath = DIR + regexResult;
