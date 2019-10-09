@@ -1,16 +1,26 @@
 <main role="main" class="container">    
     <div class="sticky-top text-center">
-        <button class="btn btn-primary" onclick="startWebcam();"><i class="material-icons">camera</i>Activate Camera</button>
-        <button class="btn btn-secondary" onclick="snapshot();"><i class="material-icons">touch_app</i>Take Picture</button>               
+        <button class="btn btn-primary" (click)="startWebcam();"><i class="material-icons">camera</i>{{(!showWebcam)?"Activate Camera":"Deactivate Camera"}}</button>
+        <button class="btn btn-secondary" [disabled]=!showWebcam (click)="triggerSnapshot();"><i class="material-icons">touch_app</i>Take Picture</button>               
     </div>
     <section class="jumbotron text-center">
             <div class="container">
-                <h1 class="jumbotron-heading">Scan Image</h1>
-                <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-                    <video onclick="snapshot(this);" width=300 height=300 id="video" controls autoplay></video>
-                    <br>
-                    <canvas  id="myCanvas" width="300" height="220"></canvas>
-                </p>            
+                <h1 class="jumbotron-heading">{{(!showWebcam)?"Turn on Camera":"Scan Image"}}</h1>
+                <p class="centered">{{seconds}}</p>
+                <webcam *ngIf="showWebcam"
+                (imageCapture)="handleImage($event)"
+                (initError)="handleInitError($event)"
+                [trigger]="triggerObservable"
+                [mirrorImage]="mirrorImage" ></webcam>  
+                <h4 *ngIf="errors.length > 0">Messages:</h4>
+                <ul *ngFor="let error of errors">
+                    <li class="alert alert-danger">{{error | json}}</li>
+                </ul>          
             </div>
-    </section>      
+    </section>   
+    <div class="snapshot" *ngIf="webcamImage">
+        <h2>Nice one!</h2>
+        <img [src]="webcamImage.imageAsDataUrl"/>
+    </div>  
 </main>
+
