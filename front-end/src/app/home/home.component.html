@@ -1,0 +1,16 @@
+<main role="main" class="container">    
+    <div class="sticky-top text-center">
+        <button class="btn btn-primary" onclick="startWebcam();"><i class="material-icons">camera</i>Activate Camera</button>
+        <button class="btn btn-secondary" onclick="snapshot();"><i class="material-icons">touch_app</i>Take Picture</button>               
+    </div>
+    <section class="jumbotron text-center">
+            <div class="container">
+                <h1 class="jumbotron-heading">Scan Image</h1>
+                <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                    <video onclick="snapshot(this);" width=300 height=300 id="video" controls autoplay></video>
+                    <br>
+                    <canvas  id="myCanvas" width="300" height="220"></canvas>
+                </p>            
+            </div>
+    </section>      
+</main>

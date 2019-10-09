@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FileSelectDirective } from 'ng2-file-upload';
 import { FormsModule } from '@angular/forms';
 import { ImageUploadService } from './image-upload.service';
+import { HomeComponent } from './home/home.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { ImageUploadService } from './image-upload.service';
     ProductAddComponent,
     ProductGetComponent,
     ProductEditComponent,
-    FileSelectDirective
+    FileSelectDirective,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
