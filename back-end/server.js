@@ -32,6 +32,7 @@ let storage = multer.diskStorage({
 let upload = multer({storage: storage});
 
 const productRoute = require('./routes/product.route');
+const facedetAPIRoute = require('./routes/facedetapi.route')
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.DB, { useNewUrlParser: true}). then(
@@ -53,14 +54,10 @@ app.use(function (req, res, next) {
 
 app.use(cors());
 app.use('/products', productRoute);
+app.use('/', facedetAPIRoute);
 //display images on angular via static path
 app.use('/uploads', express.static('uploads'));
- 
-//view album from apis/FacedetAPI
-app.get("/", function (req, res){
-	myFaceDetAPI.viewAlbum();
-});
- 
+  
 app.post('/products/upload',upload.single('photo'), function (req, res) {
 	if (!req.file) {
         console.log("No file received");
