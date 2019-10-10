@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { ImageUploadService } from './image-upload.service';
 import { HomeComponent } from './home/home.component';
 import {WebcamModule} from 'ngx-webcam';
+import { FacedetAPIService } from './facedet-api.service';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import {WebcamModule} from 'ngx-webcam';
   ],
   providers: [
     ProductsService,
-    ImageUploadService
+    ImageUploadService,
+    FacedetAPIService
   ],
   bootstrap: [AppComponent]
 })
