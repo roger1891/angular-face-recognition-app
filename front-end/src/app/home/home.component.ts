@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
 import {WebcamImage, WebcamInitError} from 'ngx-webcam';
+import { FacedetAPIService } from '../facedet-api.service';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +11,7 @@ import {WebcamImage, WebcamInitError} from 'ngx-webcam';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private fda: FacedetAPIService) { }
 
   ngOnInit() {
   }
@@ -37,23 +38,24 @@ export class HomeComponent implements OnInit {
     },2000)     
   }
 
- public handleImage(webcamImage: WebcamImage): void {
-  +
-   console.info("received webcam image", webcamImage);
-   this.webcamImage = webcamImage;
- }
+  public handleImage(webcamImage: WebcamImage): void {
+    console.info("received webcam image", webcamImage);
+    this.webcamImage = webcamImage;
+    //console.log("this is: " + this.webcamImage.imageAsDataUrl);
+    //this.fda.sendImage(this.webcamImage.imageAsDataUrl);
+    this.fda.sendImage("http://localhost:4000/uploads/1570563000257-arnold4.jpg");
+  }
 
- public get triggerObservable(): Observable<void> {
-   return this.trigger.asObservable();
- }
+  public get triggerObservable(): Observable<void> {
+    return this.trigger.asObservable();
+  }
 
- //turn camera on or off
- public startWebcam() {
-  return this.showWebcam = !this.showWebcam;
- }
+  //turn camera on or off
+  public startWebcam() {
+    return this.showWebcam = !this.showWebcam;
+  }
 
- public handleInitError(error: WebcamInitError): void {
-  this.errors.push(error);
- }
-
+  public handleInitError(error: WebcamInitError): void {
+    this.errors.push(error);
+  }
 }
