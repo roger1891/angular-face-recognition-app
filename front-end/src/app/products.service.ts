@@ -13,7 +13,7 @@ export class ProductsService {
 
   constructor(
     private http: HttpClient,
-    private router: Router,) { }
+    private router: Router) { }
 
   uploadLink(){
     return `${this.uri}/upload`;
@@ -48,7 +48,7 @@ export class ProductsService {
     };
     this.http.post(`${this.uri}/update/${id}`, obj)
       .subscribe(res => {
-        console.log('Done');
+        console.log('Done uploading product');
         this.router.navigate(['products']);
       });
   }
