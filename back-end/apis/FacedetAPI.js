@@ -118,6 +118,7 @@ module.exports = function () {
 		let req = unirest("POST", requestString);
 		let imgURL = url;
 		
+		/*
 		req.headers({
 			"x-rapidapi-host": "lambda-face-recognition.p.rapidapi.com",
 			"x-rapidapi-key": ALBUM_KEY,
@@ -144,6 +145,36 @@ module.exports = function () {
 				console.log(res.body);	
 			}	
 		});
+		*/
+		/*unirest.post(requestString)
+		   .header("X-RapidAPI-Key", API_KEY)
+		   //.field("urls", imgURL)
+		   .attach("files", fs.createReadStream(createPath(imgURL)))
+		   .field("album", ALBUM_NAME)
+		   .field("albumkey", ALBUM_KEY)
+		   .end(result => {
+			   console.log("successfully recognized image");
+			   console.log(result.body);
+			   console.log("status: " + result.body.status);
+			   console.log("photos: " + result.body.images);
+			   console.log("images: " + result.body.photos);
+		   });*/   
+		   
+		   let promise = new Promise(function(resolve, reject) {
+           unirest.post(requestString)
+           .header("X-RapidAPI-Key", API_KEY)
+           //.field("urls", imgURL)
+           .attach("files", fs.createReadStream(createPath(imgURL)))
+           .field("album", ALBUM_NAME)
+           .field("albumkey", ALBUM_KEY)
+           .end(result => {
+               console.log("successfully recognized image");
+               //console.log(result.body);
+               resolve(result.body) // giving response back
+           });
+        });
+
+       return promise;
 		
 		
 	}
