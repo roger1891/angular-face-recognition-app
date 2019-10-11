@@ -18,11 +18,7 @@ export class FacedetAPIService {
       url: imgUrl
     };    
     
-    this.http.post(`${this.uri}`, obj)
-      .subscribe(res => {
-        console.log("this is res: " + JSON.stringify(res));
-        console.log('image sent to api done');
-      });
+    return this.http.post(`${this.uri}`, obj);
   }
 
 }
