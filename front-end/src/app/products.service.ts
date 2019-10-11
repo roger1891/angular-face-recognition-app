@@ -35,6 +35,7 @@ export class ProductsService {
     return this.http.get(`${this.uri}`);
   }
 
+
   editProduct(id) {
     return this.http.get(`${this.uri}/edit/${id}`);
   }
