@@ -10,3 +10,7 @@
     font-weight: bold;
     z-index: 1;
   }
+
+  img{
+      width: 100%;
+  }
