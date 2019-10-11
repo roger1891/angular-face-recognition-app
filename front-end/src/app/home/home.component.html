@@ -3,6 +3,24 @@
         <button class="btn btn-primary" (click)="startWebcam();"><i class="material-icons">camera</i>{{(!showWebcam)?"Activate Camera":"Deactivate Camera"}}</button>
         <button class="btn btn-secondary" [disabled]=!showWebcam (click)="triggerSnapshot();"><i class="material-icons">touch_app</i>Take Picture</button>               
     </div>
+
+
+    <button type="button" class="btn btn-primary" (click)="openModal(modal_Template)">Create template modal</button>
+
+    <ng-template #modal_Template>
+        <div class="modal-header">
+            <div class="alert alert-success" role="alert">
+                <strong>{{status}}</strong> Please look who we identified!
+            </div>
+        </div>
+        <div class="modal-body">
+            <img [src]="webcamImage.imageAsDataUrl"/>
+            <p>We are {{confidenceLevel}} % sure that this image is identifed as {{name}}.</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" aria-label="Close" (click)="modalRef.hide()">Ok</button>
+          </div>        
+    </ng-template>    
     <section class="jumbotron text-center">
             <div class="container">
                 <h1 class="jumbotron-heading">{{(!showWebcam)?"Turn on Camera":"Scan Image"}}</h1>
