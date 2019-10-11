@@ -25,6 +25,7 @@
     "hammerjs": "^2.0.8",
     "ng2-file-upload": "^1.3.0",
     "ng2-slim-loading-bar": "^4.0.0",
+    "ngx-bootstrap": "^5.1.2",
     "ngx-webcam": "^0.2.6",
     "rxjs": "~6.4.0",
     "rxjs-compat": "^6.5.3",
