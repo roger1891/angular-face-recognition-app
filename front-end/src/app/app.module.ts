@@ -18,7 +18,7 @@ import { ImageUploadService } from './image-upload.service';
 import { HomeComponent } from './home/home.component';
 import {WebcamModule} from 'ngx-webcam';
 import { FacedetAPIService } from './facedet-api.service';
-
+import { ModalModule, BsModalRef } from 'ngx-bootstrap';
 
 @NgModule({
   declarations: [
@@ -38,12 +38,14 @@ import { FacedetAPIService } from './facedet-api.service';
     BrowserAnimationsModule,
     MatProgressBarModule,
     FormsModule,
-    WebcamModule
+    WebcamModule,
+    ModalModule.forRoot()
   ],
   providers: [
     ProductsService,
     ImageUploadService,
-    FacedetAPIService
+    FacedetAPIService,
+    BsModalRef
   ],
   bootstrap: [AppComponent]
 })
