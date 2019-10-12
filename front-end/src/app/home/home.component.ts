@@ -14,7 +14,9 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 })
 export class HomeComponent implements OnInit {
   //get #modal_Template  reference
-  @ViewChild('modal_Template', {static: false}) modalTemp: TemplateRef<void>;
+  @ViewChild('success_Modal_Template', {static: false}) successModalTemplate: TemplateRef<void>;
+  @ViewChild('error_Modal_Template', {static: false}) errorModalTemplate: TemplateRef<void>;
+  error_Modal_Template
   constructor(private fda: FacedetAPIService, private ps: ProductsService, private modalService: BsModalService) { }
 
   ngOnInit() {
@@ -60,10 +62,24 @@ export class HomeComponent implements OnInit {
   public handleImage(webcamImage: WebcamImage): void {
     console.info("received webcam image", webcamImage);
     this.webcamImage = webcamImage;
-    //console.log("this is: " + this.webcamImage.imageAsDataUrl);
+    console.log("this is: " + this.webcamImage.imageAsDataUrl);
     //this.fda.sendImage(this.webcamImage.imageAsDataUrl);
     //send image to api
-    this.fda.sendImage("http://localhost:4000/uploads/1570563000257-arnold4.jpg").subscribe(res => {
+    this.fda.sendImage("http://localhost:4000/uploads/1570363432578-coder.jpg").subscribe(res => {
+      console.log("this is res: " + JSON.stringify(res));
+      //tag array:displays details of image verification
+      let tagArray = res["photos"][0].tags;
+      if (!Array.isArray(tagArray) || !tagArray.length) {
+        // array does not exist, is not an array, or is empty
+        // ⇒ do not attempt to process array
+        console.log("error");
+        this.status = "Error";
+        //open modal
+        this.openModal(this.errorModalTemplate);
+        return;
+      }
+      
+      //this.fda.sendImage(this.webcamImage.imageAsDataUrl).subscribe(res => {
       //set variables
       let entryId = res["photos"][0].tags[0].uids[0].prediction; 
       this.status = res["status"];
@@ -77,7 +93,8 @@ export class HomeComponent implements OnInit {
       this.ps.editProduct(entryId).subscribe(res => {
         //set variables
         this.name = res["ProductName"];
-        this.openModal(this.modalTemp);
+        //open modal
+        this.openModal(this.successModalTemplate);
         //alert(status + ", Name: " + name + " We are about " + confidenceLevel + "sure" );
         //set product array to respond from url
         //this.product = res;
