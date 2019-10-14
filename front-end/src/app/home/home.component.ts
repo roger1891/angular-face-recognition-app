@@ -16,24 +16,26 @@ export class HomeComponent implements OnInit {
   //get #modal_Template  reference
   @ViewChild('success_Modal_Template', {static: false}) successModalTemplate: TemplateRef<void>;
   @ViewChild('error_Modal_Template', {static: false}) errorModalTemplate: TemplateRef<void>;
-  error_Modal_Template
+ 
   constructor(private fda: FacedetAPIService, private ps: ProductsService, private modalService: BsModalService) { }
 
   ngOnInit() {
   }
+  //webcam vars
   public showWebcam = true;
   public mirrorImage: string = "never";
   public errors: WebcamInitError[] = [];
   public seconds:number ;
   private trigger: Subject<void> = new Subject<void>();
 
-
+  
   //modal
   modalRef: BsModalRef;
   //modal content
-  private status: string
-  private confidenceLevel: number
-  private name: string
+  private status: string;
+  private confidenceLevel: number;
+  private name: string;
+  private origImage: string;
   // latest snapshot
   public webcamImage: WebcamImage = null;
   
@@ -59,49 +61,34 @@ export class HomeComponent implements OnInit {
     },2000)     
   }
 
+
   public handleImage(webcamImage: WebcamImage): void {
-    console.info("received webcam image", webcamImage);
+    //store webcam image into variable
     this.webcamImage = webcamImage;
-    console.log("this is: " + this.webcamImage.imageAsDataUrl);
-    //this.fda.sendImage(this.webcamImage.imageAsDataUrl);
     //send image to api
-    this.fda.sendImage("http://localhost:4000/uploads/1570363432578-coder.jpg").subscribe(res => {
-      console.log("this is res: " + JSON.stringify(res));
+    this.fda.sendImage(this.webcamImage.imageAsDataUrl).subscribe(res => {
       //tag array:displays details of image verification
       let tagArray = res["photos"][0].tags;
+      //if there is no tag array
       if (!Array.isArray(tagArray) || !tagArray.length) {
-        // array does not exist, is not an array, or is empty
-        // ⇒ do not attempt to process array
-        console.log("error");
         this.status = "Error";
         //open modal
         this.openModal(this.errorModalTemplate);
         return;
       }
-      
-      //this.fda.sendImage(this.webcamImage.imageAsDataUrl).subscribe(res => {
       //set variables
       let entryId = res["photos"][0].tags[0].uids[0].prediction; 
       this.status = res["status"];
       this.confidenceLevel = (res["photos"][0].tags[0].uids[0].confidence * 100);
-      //console.log("this is res: " + JSON.stringify(res));
-      //console.log('image sent to api done');
-      //console.log("this is id: " + entryId);
       
-
       //check database for id
       this.ps.editProduct(entryId).subscribe(res => {
         //set variables
         this.name = res["ProductName"];
+        this.origImage = res["ProductLink"];
         //open modal
         this.openModal(this.successModalTemplate);
-        //alert(status + ", Name: " + name + " We are about " + confidenceLevel + "sure" );
-        //set product array to respond from url
-        //this.product = res;
-        //set default image from database
-        //this.imgURL = this.product.ProductLink;
       })
-
     });
   }
 
