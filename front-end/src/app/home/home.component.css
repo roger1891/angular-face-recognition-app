@@ -14,3 +14,7 @@
   img{
       width: 100%;
   }
+
+  .modal-body img {
+      height: 150px;
+  }
