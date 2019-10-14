@@ -42,37 +42,6 @@ module.exports = function () {
 		let req = unirest("POST", requestString);
 		let imgURL = url;
 		let entryId = id
-/*
-		req.headers({
-			"x-rapidapi-host": "lambda-face-recognition.p.rapidapi.com",
-			"x-rapidapi-key": API_KEY,
-			"content-type": "multipart/form-data"
-		});
-
-		req.multipart([
-			{
-				"urls": imgURL
-			},
-			{
-				"files": {},
-				"content-type": "application/octet-stream"
-			},
-			{
-				"album": ALBUM_NAME
-			},
-			{
-				"albumkey": ALBUM_KEY
-			},
-			{
-				"entryid": entryId
-			}
-		]);
-
-		req.end(function (res) {
-			
-			console.log(res);			
-				
-		});	*/
 		
 		unirest.post(requestString)
 		   .header("X-RapidAPI-Key", API_KEY)
@@ -117,67 +86,31 @@ module.exports = function () {
 		let requestString = "https://lambda-face-recognition.p.rapidapi.com/recognize";
 		let req = unirest("POST", requestString);
 		let imgURL = url;
-		
-		/*
-		req.headers({
-			"x-rapidapi-host": "lambda-face-recognition.p.rapidapi.com",
-			"x-rapidapi-key": ALBUM_KEY,
-			"content-type": "multipart/form-data"
-		});
-
-		req.multipart([
-			{
-				"urls": imgURL
-			},
-			{
-				"albumkey": ALBUM_KEY
-			},
-			{
-				"album": ALBUM_NAME
-			}
-		]);
-
-		req.end(function (res) {
-			if (res.error) {
-				console.log(res.body.error);
-			}else {
-				console.log("successfully recognized image");
-				console.log(res.body);	
-			}	
-		});
-		*/
-		/*unirest.post(requestString)
-		   .header("X-RapidAPI-Key", API_KEY)
-		   //.field("urls", imgURL)
-		   .attach("files", fs.createReadStream(createPath(imgURL)))
-		   .field("album", ALBUM_NAME)
-		   .field("albumkey", ALBUM_KEY)
-		   .end(result => {
-			   console.log("successfully recognized image");
-			   console.log(result.body);
-			   console.log("status: " + result.body.status);
-			   console.log("photos: " + result.body.images);
-			   console.log("images: " + result.body.photos);
-		   });*/   
-		   
-		   let promise = new Promise(function(resolve, reject) {
+		let path = 'temp/' + imgURL;
+	
+	    let promise = new Promise(function(resolve, reject) {
            unirest.post(requestString)
            .header("X-RapidAPI-Key", API_KEY)
-           //.field("urls", imgURL)
-           .attach("files", fs.createReadStream(createPath(imgURL)))
+		   .attach('files', fs.createReadStream(path))
            .field("album", ALBUM_NAME)
            .field("albumkey", ALBUM_KEY)
            .end(result => {
                console.log("successfully recognized image");
-               //console.log(result.body);
+			   console.log("body result: " + result.body);
+			   console.log(result.status, result.headers, result.body);
                resolve(result.body) // giving response back
            });
+		   
+		   //destroy image after usage
+		   destryTempImg(path);
+		   
         });
+		
+		
 
        return promise;
-		
-		
 	}
+	
 	//not important
 	//post
 	this.detectFeaturesImg = (url)=>{	
@@ -263,7 +196,12 @@ module.exports = function () {
 		let regexResult = fileName.match(pattern);
 		let imagePath = DIR + regexResult;
 
-	    return imagePath;
+		return imagePath;
+	}
+	
+	destryTempImg = (imagePath) => {
+		//remove image file
+		fs.unlinkSync(imagePath);
 	}
 }
 
