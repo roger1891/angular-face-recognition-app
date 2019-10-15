@@ -2,9 +2,9 @@
 The app is able to create and edit employee details including their images. The app can then take pictures of employees with the help of a webcam and compare them to the existing images in the database to determine whether the employee exists.
  
  commands for cmd to start app
- Backend: nodemon.server
- Front end: ng serve
- Port: 4200
+ 1. Backend: nodemon.server
+ 2. Front end: ng serve
+ 3. Port: 4200
  
  Technologies used:
  
